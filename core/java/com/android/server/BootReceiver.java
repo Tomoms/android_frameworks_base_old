@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2009 The Android Open Source Project
  *
@@ -371,13 +372,8 @@ public class BootReceiver extends BroadcastReceiver {
             } catch (FileNotFoundException e) {
                 Slog.i(TAG, "No existing last log timestamp file " + sFile.getBaseFile() +
                         "; starting empty");
-            } catch (IOException e) {
-                Slog.w(TAG, "Failed parsing " + e);
-            } catch (IllegalStateException e) {
-                Slog.w(TAG, "Failed parsing " + e);
-            } catch (NullPointerException e) {
-                Slog.w(TAG, "Failed parsing " + e);
-            } catch (XmlPullParserException e) {
+            } catch (IOException | IllegalStateException
+                   | NullPointerException | XmlPullParserException e) {
                 Slog.w(TAG, "Failed parsing " + e);
             } finally {
                 if (!success) {
