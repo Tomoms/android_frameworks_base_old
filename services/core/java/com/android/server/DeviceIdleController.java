@@ -1262,6 +1262,28 @@ public class DeviceIdleController extends SystemService
                 FileDescriptor err, String[] args, ShellCallback callback, ResultReceiver resultReceiver) {
             (new Shell()).exec(this, in, out, err, args, callback, resultReceiver);
         }
+
+        @Override public void addSystemPowerSaveWhitelistApp(String name) {
+            getContext().enforceCallingOrSelfPermission(android.Manifest.permission.DEVICE_POWER,
+                    null);
+            long ident = Binder.clearCallingIdentity();
+            try {
+                addSystemPowerSaveWhitelistAppInternal(name);
+            } finally {
+                Binder.restoreCallingIdentity(ident);
+            }
+        }
+
+        @Override public void removeSystemPowerSaveWhitelistApp(String name) {
+            getContext().enforceCallingOrSelfPermission(android.Manifest.permission.DEVICE_POWER,
+                    null);
+            long ident = Binder.clearCallingIdentity();
+            try {
+                removeSystemPowerSaveWhitelistAppInternal(name);
+            } finally {
+                Binder.restoreCallingIdentity(ident);
+            }
+        }
     }
 
     public class LocalService {
@@ -1500,6 +1522,35 @@ public class DeviceIdleController extends SystemService
     public boolean removePowerSaveWhitelistAppInternal(String name) {
         synchronized (this) {
             if (mPowerSaveWhitelistUserApps.remove(name) != null) {
+                reportPowerSaveWhitelistChangedLocked();
+                updateWhitelistAppIdsLocked();
+                writeConfigFileLocked();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean addSystemPowerSaveWhitelistAppInternal(String name) {
+        synchronized (this) {
+            try {
+                ApplicationInfo ai = getContext().getPackageManager().getApplicationInfo(name,
+                        PackageManager.MATCH_UNINSTALLED_PACKAGES);
+                if (mPowerSaveWhitelistApps.put(name, UserHandle.getAppId(ai.uid)) == null) {
+                    reportPowerSaveWhitelistChangedLocked();
+                    updateWhitelistAppIdsLocked();
+                    writeConfigFileLocked();
+                }
+                return true;
+            } catch (PackageManager.NameNotFoundException e) {
+                return false;
+            }
+        }
+    }
+
+    public boolean removeSystemPowerSaveWhitelistAppInternal(String name) {
+        synchronized (this) {
+            if (mPowerSaveWhitelistApps.remove(name) != null) {
                 reportPowerSaveWhitelistChangedLocked();
                 updateWhitelistAppIdsLocked();
                 writeConfigFileLocked();
