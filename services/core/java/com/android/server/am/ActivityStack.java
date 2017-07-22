@@ -284,6 +284,10 @@ final class ActivityStack {
      * and finish it later if another activity replaces it on wakeup.
      */
     ActivityRecord mLastNoHistoryActivity = null;
+    
+    // while an activity with FLAG_ACTIVITY_NO_HISTORY is sleeping(stopped),
+    // if another activity is stated, stopped activity should not be finished.
+    private boolean mForceFinishNoHistory = false;
 
     /**
      * Current activity that is resumed, or null if there is none.
@@ -2133,10 +2137,12 @@ final class ActivityStack {
             if (mService.mLockScreenShown == ActivityManagerService.LOCK_SCREEN_LEAVING) {
                 mService.mLockScreenShown = ActivityManagerService.LOCK_SCREEN_HIDDEN;
                 mService.updateSleepIfNeededLocked();
+                mForceFinishNoHistory = true;
             }
             result = resumeTopActivityInnerLocked(prev, options);
         } finally {
             mStackSupervisor.inResumeTopActivity = false;
+            mForceFinishNoHistory = false;
         }
         return result;
     }
@@ -2318,7 +2324,7 @@ final class ActivityStack {
         // If the most recent activity was noHistory but was only stopped rather
         // than stopped+finished because the device went to sleep, we need to make
         // sure to finish it as we're making a new activity topmost.
-        if (mService.isSleepingLocked() && mLastNoHistoryActivity != null &&
+        if ((mService.isSleepingLocked() || mForceFinishNoHistory) && mLastNoHistoryActivity != null &&
                 !mLastNoHistoryActivity.finishing) {
             if (DEBUG_STATES) Slog.d(TAG_STATES,
                     "no-history finish of " + mLastNoHistoryActivity + " on new resume");
