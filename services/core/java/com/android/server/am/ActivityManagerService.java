@@ -6724,6 +6724,7 @@ public final class ActivityManagerService extends ActivityManagerNative
 
         mHandler.removeMessages(PROC_START_TIMEOUT_MSG, app);
 
+        boolean didSomething = false;
         boolean normalMode = mProcessesReady || isAllowedWhileBooting(app.info);
         List<ProviderInfo> providers = normalMode ? generateApplicationProvidersLocked(app) : null;
 
@@ -6731,6 +6732,7 @@ public final class ActivityManagerService extends ActivityManagerNative
             Message msg = mHandler.obtainMessage(CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG);
             msg.obj = app;
             mHandler.sendMessageDelayed(msg, CONTENT_PROVIDER_PUBLISH_TIMEOUT);
+            didSomething = true;
         }
 
         checkTime(startTime, "attachApplicationLocked: before bindApplication");
@@ -6826,7 +6828,6 @@ public final class ActivityManagerService extends ActivityManagerNative
         mProcessesOnHold.remove(app);
 
         boolean badApp = false;
-        boolean didSomething = false;
 
         // See if the top visible activity is waiting to run in this process...
         if (normalMode) {
