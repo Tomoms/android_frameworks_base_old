@@ -928,7 +928,7 @@ public class NetworkManagementService extends INetworkManagementService.Stub
                     notifyInterfaceClassActivity(Integer.parseInt(cooked[3]),
                             isActive ? DataConnectionRealTimeInfo.DC_POWER_STATE_HIGH
                             : DataConnectionRealTimeInfo.DC_POWER_STATE_LOW,
-                            timestampNanos, processUid, false);
+                            timestampNanos, processUid, true);
                     return true;
                     // break;
             case NetdResponseCode.InterfaceAddressChange:
@@ -1745,7 +1745,7 @@ public class NetworkManagementService extends INetworkManagementService.Stub
                 @Override public void run() {
                     notifyInterfaceClassActivity(type,
                             DataConnectionRealTimeInfo.DC_POWER_STATE_HIGH,
-                            SystemClock.elapsedRealtimeNanos(), -1, false);
+                            SystemClock.elapsedRealtimeNanos(), -1, true);
                 }
             });
         }
@@ -1774,7 +1774,7 @@ public class NetworkManagementService extends INetworkManagementService.Stub
                 @Override public void run() {
                     notifyInterfaceClassActivity(params.type,
                             DataConnectionRealTimeInfo.DC_POWER_STATE_LOW,
-                            SystemClock.elapsedRealtimeNanos(), -1, false);
+                            SystemClock.elapsedRealtimeNanos(), -1, true);
                 }
             });
         }
