@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Environment;
+import android.os.Process;
 import android.os.ServiceManager;
 import android.os.storage.StorageManager;
 import android.util.ArraySet;
@@ -145,6 +146,7 @@ public class BackgroundDexOptService extends JobService {
         new Thread("BackgroundDexOptService_PostBootUpdate") {
             @Override
             public void run() {
+                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 for (String pkg : pkgs) {
                     if (mAbortPostBootUpdate.get()) {
                         // JobScheduler requested an early abort.
@@ -202,6 +204,7 @@ public class BackgroundDexOptService extends JobService {
         new Thread("BackgroundDexOptService_IdleOptimization") {
             @Override
             public void run() {
+                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 for (String pkg : pkgs) {
                     if (mAbortIdleOptimization.get()) {
                         // JobScheduler requested an early abort.
