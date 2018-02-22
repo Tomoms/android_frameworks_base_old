@@ -148,8 +148,8 @@ ifndef HWUI_COMPILE_SYMBOLS
 endif
 
 ifdef HWUI_COMPILE_FOR_PERF
-    # TODO: Non-arm? and mapcs support!
-    hwui_cflags += -fno-omit-frame-pointer -marm -O3
+    # TODO: Non-arm?
+    hwui_cflags += -fno-omit-frame-pointer -marm
 endif
 
 # This has to be lazy-resolved because it depends on the LOCAL_MODULE_CLASS

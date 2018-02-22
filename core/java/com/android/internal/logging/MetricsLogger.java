@@ -72,6 +72,9 @@ public class MetricsLogger {
     }
 
     public static void action(Context context, int category, String pkg) {
+        if (Build.IS_DEBUGGABLE && category == VIEW_UNKNOWN) {
+            throw new IllegalArgumentException("Must define metric category");
+        }
         EventLogTags.writeSysuiAction(category, pkg);
     }
 

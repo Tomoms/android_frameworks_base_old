@@ -249,7 +249,6 @@
         <item>com.android.externalstorage</item>
         <item>com.android.providers.downloads.ui</item>
         <item>com.android.packageinstaller</item>
-        <item>com.google.android.deskclock</item>
     </string-array>
 
 </resources>

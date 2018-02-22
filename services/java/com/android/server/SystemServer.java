@@ -1614,44 +1614,6 @@ public final class SystemServer {
             }
         });
     }
-    
-    /**
-     * This is the non-static variant of startAfterBootComponents(Context)
-     **/
-    void startAfterBootComponents() {
-        try {
-            Slog.d(TAG, "Starting Hardware Control Service...");
-            HardwareControlService hws =
-                mSystemServiceManager.startService(HardwareControlService.class);
-            mPowerManagerService.setButtonBacklightControl(
-                hws.getButtonBacklightControl());
-            Slog.d(TAG, "Hardware Control Service started successfully.");
-        } catch(Exception ex) {
-            Slog.e(TAG, "Failed to start Hardware Control Service!");
-            ex.printStackTrace();
-        }
-    }
-    
-    static final void startAfterBootComponents(Context context) {
-        try {
-            Slog.d(TAG, "Applying cmhw settings...");
-            Intent i = new Intent();
-            // I know many people say they are weird.
-            // But I can't change it. Because they would have to change
-            // the name everywhere lol.
-            i.setAction("cyanogenmod.intent.action.INITIALIZE_CM_HARDWARE");
-            context.sendBroadcastAsUser(i, UserHandle.CURRENT);
-            
-            Slog.d(TAG, "Getting Modern Services ready...");
-            SystemProperties.set("sf.enable_modern_services",
-                String.valueOf(Settings.System.getInt(context.getContentResolver(),
-                    Settings.System.ENABLE_MODERN_SERVICES, 1)));
-        } catch(Exception ex) {
-            Slog.e(TAG, "Failed to start afterboot components!");
-            ex.printStackTrace();
-        }
-    }
->>>>>>> 618fe2f... Overall improvements
 
     static final void startSystemUi(Context context) {
         Intent intent = new Intent();

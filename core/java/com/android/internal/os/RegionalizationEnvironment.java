@@ -46,7 +46,7 @@ public class RegionalizationEnvironment {
 
     private final static boolean SUPPORTED = SystemProperties.getBoolean(
             "ro.regionalization.support", false);
-    private final static boolean DEBUG = false;
+    private final static boolean DEBUG = true;
 
     private static IRegionalizationService mRegionalizationService = null;
 
