@@ -13684,7 +13684,9 @@ public class PackageManagerService extends IPackageManager.Stub
             if (mPackageListObservers.size() == 0) {
                 return;
             }
-            observers = (PackageListObserver[]) mPackageListObservers.toArray();
+            final PackageListObserver[] observerArray =
+                    new PackageListObserver[mPackageListObservers.size()];
+            observers = mPackageListObservers.toArray(observerArray);
         }
         for (int i = observers.length - 1; i >= 0; --i) {
             observers[i].onPackageAdded(packageName);
@@ -13698,7 +13700,9 @@ public class PackageManagerService extends IPackageManager.Stub
             if (mPackageListObservers.size() == 0) {
                 return;
             }
-            observers = (PackageListObserver[]) mPackageListObservers.toArray();
+            final PackageListObserver[] observerArray =
+                    new PackageListObserver[mPackageListObservers.size()];
+            observers = mPackageListObservers.toArray(observerArray);
         }
         for (int i = observers.length - 1; i >= 0; --i) {
             observers[i].onPackageRemoved(packageName);
