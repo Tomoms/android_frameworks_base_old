@@ -3572,4 +3572,7 @@
     <!-- Component name for default assistant on this device -->
     <string name="config_defaultAssistantComponentName"></string>
 
+    <!-- Whether auto face unlock is enabled by default -->
+    <bool name="config_face_unlock_enabled_by_default">true</bool>
+
 </resources>

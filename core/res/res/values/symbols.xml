@@ -3423,4 +3423,7 @@
   <java-symbol type="integer" name="db_wal_truncate_size" />
 
   <java-symbol type="string" name="config_defaultAssistantComponentName" />
+
+  <!-- Whether auto face unlock is enabled by default -->
+  <java-symbol type="bool" name="config_face_unlock_enabled_by_default" />
 </resources>
